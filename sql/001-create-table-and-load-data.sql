@@ -1,17 +1,13 @@
-DROP TABLE IF EXISTS juices;
+DROP TABLE IF EXISTS employees;
 
-CREATE TABLE juices (
-  id int unsigned AUTO_INCREMENT,
+CREATE TABLE employees (
+  employeeNumber int unsigned AUTO_INCREMENT,
   name VARCHAR(20) NOT NULL,
-  price INT NOT NULL,
-  PRIMARY KEY(id)
+  age INT NOT NULL,
+  PRIMARY KEY(employeeNumber)
 );
 
-INSERT INTO juices (name, price) VALUES ("コカ・コーラ", 180);
-INSERT INTO juices (name, price) VALUES ("バブルマン", 120);
-INSERT INTO juices (name, price) VALUES ("ペプシ", 150);
-INSERT INTO juices (name, price) VALUES ("ファンタ", 130);
-INSERT INTO juices (name, price) VALUES ("レッドブル", 200);
-INSERT INTO juices (name, price) VALUES ("モンスター", 220);
-INSERT INTO juices (name, price) VALUES ("オロナミンC", 110);
-INSERT INTO juices (name, price) VALUES ("リポビタンD", 140);
+INSERT INTO employees (name, age) VALUES ("スティーブ", 21);
+INSERT INTO employees (name, age) VALUES ("マーク", 20);
+INSERT INTO employees (name, age) VALUES ("ジェフ", 30);
+
