@@ -10,5 +10,5 @@ import java.util.Optional;
 @Mapper
 public interface EmployeeMapper {
     @Select("select * from emplyee_list WHRER name LIKE CONCAT('%', #{name}, '%')")
-    Optional<Employee> findByName(String name);
+    Optional<Employee> findByEmployee(int employeeNumber);
 }
