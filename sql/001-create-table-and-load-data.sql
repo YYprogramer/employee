@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS employees;
 CREATE TABLE employees (
   employeeNumber int unsigned AUTO_INCREMENT,
   name VARCHAR(20) NOT NULL,
-  age INT NOT NULL,
+  age int NOT NULL,
   PRIMARY KEY(employeeNumber)
 );
 
