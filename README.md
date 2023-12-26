@@ -37,8 +37,10 @@
 |         3          |   ジェフ    |   30    |  
 
 ### 実装時間
-R5.12.25　2時間  
-R5.12.26　1時間30分 
+R5  
+12.25　2時間  
+12.26　1時間30分  
+12.27　1時間
 
 
 ### エラーの共有と解決方法
@@ -60,3 +62,28 @@ ERROR: Encountered errors while bringing up the project.
 `ポート3307はすでに使用されています`
 という意味でした。
 ですのでDockerの今まで作成したContainers・Images・Volumesを削除することにより解決しました。
+
+#### cURLコマンドを入力しても500エラーになる
+エラー状態
+![ターミナルのキャプション](img/スクリーンショット 2023-12-27 5.01.02.png)
+
+エラーメッセージ
+```
+### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Table 'employee_list.employee_list' doesn't exist
+### The error may exist in com/yy5/employee/mapper/EmployeeMapper.java (best guess)
+### The error may involve com.yy5.employee.mapper.EmployeeMapper.findByEmployee-Inline
+### The error occurred while setting parameters
+### SQL: select * from employee_list WHERE employeeNumber LIKE CONCAT('%', ?, '%')
+### Cause: java.sql.SQLSyntaxErrorException: Table 'employee_list.employee_list' doesn't exist
+; bad SQL grammar []] with root cause
+
+java.sql.SQLSyntaxErrorException: Table 'employee_list.employee_list' doesn't exist
+```
+
+解決方法
+
+`Table 'employee_list.employee_list' doesn't exist`
+というエラーメッセージから、
+`employee_listデータベースのemployee_listテーブルを検索しようとしているが存在しない。`
+ということが読み取れる。実装としてはemployee_listデータベースののemployeesテーブルを読み込んで欲しかったのでMapperを修正することで解決しました。
+![Mapper修正のキャプション](img/スクリーンショット 2023-12-27 5.45.04.png)
