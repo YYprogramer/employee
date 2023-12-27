@@ -87,3 +87,25 @@ java.sql.SQLSyntaxErrorException: Table 'employee_list.employee_list' doesn't ex
 `employee_listデータベースのemployee_listテーブルを検索しようとしているが存在しない。`
 ということが読み取れる。実装としてはemployee_listデータベースののemployeesテーブルを読み込んで欲しかったのでMapperを修正することで解決しました。
 ![Mapper修正のキャプション](img/スクリーンショット 2023-12-27 5.45.04.png)
+
+#### 全件検索を行なっても、１つの結果を返されることが期待されてエラーになる
+エラー状態
+![ターミナルのキャプション](img/スクリーンショット 2023-12-28 4.46.06.png)
+
+エラーメッセージ
+```
+org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 3
+```
+
+解決方法
+
+`Expected one result (or null) to be returned by selectOne(), but found: 3`
+というエラーメッセージから、
+`１つの結果を期待しているが３つの結果が見つかった`
+ということが読み取れます。
+結論から言うと原因はOptionalでレンスポンスをしていることでした。
+Optionalは１つのレコードかNullの結果しかレスポンスしません。
+よってOptionalからListに変更したところ解決しました。
+![Controllerクラスの修正](img/スクリーンショット 2023-12-28 4.50.08.png)
+![Mapperクラスの修正](img/スクリーンショット 2023-12-28 4.50.20.png)
+![Serviceクラスの修正](img/スクリーンショット 2023-12-28 4.50.31.png)
