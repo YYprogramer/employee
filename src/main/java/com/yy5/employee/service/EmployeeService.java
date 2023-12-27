@@ -5,6 +5,7 @@ import com.yy5.employee.entity.Employee;
 import com.yy5.employee.mapper.EmployeeMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,7 +15,7 @@ public class EmployeeService {
         this.employeeMapper = employeeMapper;
     }
 
-    public Optional<Employee> findAll() {
+    public List<Employee> findAll() {
         return this.employeeMapper.findAll();
     }
     public Employee findEmployee(int employeeNumber){
