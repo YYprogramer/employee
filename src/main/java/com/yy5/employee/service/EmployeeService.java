@@ -14,9 +14,12 @@ public class EmployeeService {
         this.employeeMapper = employeeMapper;
     }
 
+    public Optional<Employee> findAll() {
+        return this.employeeMapper.findAll();
+    }
     public Employee findEmployee(int employeeNumber){
         Optional<Employee> employee = this.employeeMapper.findByEmployee(employeeNumber);
-        return employee.get();
+        return employee.orElse(null);
     }
 }
 
