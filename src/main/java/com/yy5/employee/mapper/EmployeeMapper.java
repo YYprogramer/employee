@@ -9,6 +9,9 @@ import java.util.Optional;
 
 @Mapper
 public interface EmployeeMapper {
+    @Select("select * from employees")
+    Optional<Employee> findAll();
+
     @Select("select * from employees WHERE employeeNumber LIKE CONCAT('%', #{employeeNumber}, '%')")
     Optional<Employee> findByEmployee(int employeeNumber);
 }
