@@ -22,7 +22,7 @@ public class EmployeeService {
     public Employee findEmployee(int employeeNumber){
         Optional<Employee> employee = this.employeeMapper.findByEmployee(employeeNumber);
         return this.employeeMapper.findByEmployee(employeeNumber)
-                .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber:" + employeeNumber +"is not found"));
+                .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber:" + employeeNumber +" is not found"));
     }
 }
 
