@@ -40,6 +40,6 @@ public class EmployeeController {
                 "error", HttpStatus.NOT_FOUND.getReasonPhrase(),
                 "message", e.getMessage(),
                 "path", request.getRequestURI());
-        return new ResponseEntity(body, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 }
