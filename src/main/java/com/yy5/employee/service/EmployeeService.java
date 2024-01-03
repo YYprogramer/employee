@@ -1,6 +1,7 @@
 package com.yy5.employee.service;
 
 
+import com.yy5.employee.NotFound.EmployeeNotFoundException;
 import com.yy5.employee.entity.Employee;
 import com.yy5.employee.mapper.EmployeeMapper;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,8 @@ public class EmployeeService {
     }
     public Employee findEmployee(int employeeNumber){
         Optional<Employee> employee = this.employeeMapper.findByEmployee(employeeNumber);
-        return employee.orElse(null);
+        return this.employeeMapper.findByEmployee(employeeNumber)
+                .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber:" + employeeNumber +" is not found"));
     }
 }
 
