@@ -2,14 +2,12 @@ package com.yy5.employee.controller;
 
 import com.yy5.employee.NotFound.EmployeeNotFoundException;
 import com.yy5.employee.entity.Employee;
+import com.yy5.employee.request.EmployeeRequest;
 import com.yy5.employee.service.EmployeeService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
 import java.util.LinkedHashMap;
@@ -42,5 +40,9 @@ public class EmployeeController {
         body.put("message", e.getMessage());
         body.put("path", request.getRequestURI());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+    @PostMapping("/employees")
+    public Employee insert(@RequestBody EmployeeRequest employeeRequest) {
+        return employeeService.insert(employeeRequest.getName(), employeeRequest.getAge());
     }
 }
