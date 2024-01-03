@@ -24,5 +24,11 @@ public class EmployeeService {
         return this.employeeMapper.findByEmployee(employeeNumber)
                 .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber:" + employeeNumber +" is not found"));
     }
+
+    public Employee insert (String name, int age ) {
+        Employee employee = new Employee(null, name ,age);
+        employeeMapper.insert(employee);
+        return employee;
+    }
 }
 
