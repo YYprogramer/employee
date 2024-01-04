@@ -1,7 +1,7 @@
 package com.yy5.employee.entity;
 
 public class Employee {
-    private int employeeNumber;
+    private Integer employeeNumber;
     private String name;
     private int age;
 
