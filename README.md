@@ -114,3 +114,26 @@ Optionalは１つのレコードかNullの結果しかレスポンスしませ�
 ![Controllerクラスの修正](img/スクリーンショット 2023-12-28 4.50.08.png)
 ![Mapperクラスの修正](img/スクリーンショット 2023-12-28 4.50.20.png)
 ![Serviceクラスの修正](img/スクリーンショット 2023-12-28 4.50.31.png)
+
+#### 新規登録ができない
+エラー状態
+![ターミナルのキャプション](img/スクリーンショット 2024-01-05 4.58.05.png)
+![エラーメッセージ](img/スクリーンショット 2024-01-05 4.58.31.png)
+
+エラーメッセージ
+```
+java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because "employeeNumber" is null
+```
+
+解決方法
+
+`ENullPointerException: Cannot invoke "java.lang.Integer.intValue()" because "employeeNumber" is null`
+というエラーメッセージから、
+`employeeNumberがnullのため実行できない`
+ということが読み取れます。
+結論から言うと原因はInt型でemployeeNumberを定義していることでした。
+新規登録を行う場合、Serviceクラスで一旦空のemployeeNumberを作成しておき、Mapperに渡った時insertメソッドで自動採番されます。
+ですのでemployeeNumberはnullを許容できる必要がありますがInt型の場合はnullを許容できません。
+よってInteger型に変更することで、エラーを解消しました。
+![entityクラスの修正](img/スクリーンショット 2024-01-05 5.36.55.png)
+
