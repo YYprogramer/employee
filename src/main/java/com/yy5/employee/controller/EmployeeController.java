@@ -3,12 +3,16 @@ package com.yy5.employee.controller;
 import com.yy5.employee.NotFound.EmployeeNotFoundException;
 import com.yy5.employee.entity.Employee;
 import com.yy5.employee.request.EmployeeRequest;
+import com.yy5.employee.response.EmployeeResponse;
 import com.yy5.employee.service.EmployeeService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.ZonedDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,7 +46,10 @@ public class EmployeeController {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
     @PostMapping("/employees")
-    public Employee insert(@RequestBody EmployeeRequest employeeRequest) {
-        return employeeService.insert(employeeRequest.getName(), employeeRequest.getAge());
+    public ResponseEntity<EmployeeResponse> insert(@RequestBody EmployeeRequest employeeRequest, UriComponentsBuilder uriBuilder) {
+        Employee employee = employeeService.insert(employeeRequest.getName(),employeeRequest.getAge());
+        URI location = uriBuilder.path("employees/{employeeNumber}").buildAndExpand(employee.getEmployeeNumber()).toUri();
+        EmployeeResponse body = new EmployeeResponse("employee created");
+        return ResponseEntity.created(location).body(body);
     }
 }
