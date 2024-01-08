@@ -132,7 +132,7 @@ java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" bec
 
 解決方法
 
-`ENullPointerException: Cannot invoke "java.lang.Integer.intValue()" because "employeeNumber" is null`
+`NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because "employeeNumber" is null`
 というエラーメッセージから、
 `employeeNumberがnullのため実行できない`
 ということが読み取れます。
