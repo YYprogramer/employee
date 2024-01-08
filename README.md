@@ -138,7 +138,7 @@ java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" bec
 ということが読み取れます。
 結論から言うと原因はInt型でemployeeNumberを定義していることでした。
 新規登録を行う場合、Serviceクラスで一旦空のemployeeNumberを作成しておき、Mapperに渡った時insertメソッドで自動採番されます。
-ですのでemployeeNumberはnullを許容できる必要がありますがInt型の場合はnullを許容できません。
+ですのでemployeeNumberはnullを許容できる必要がありますがint型の場合はnullを許容できません。
 よってInteger型に変更することで、エラーを解消しました。
 ![entityクラスの修正](img/スクリーンショット 2024-01-05 5.36.55.png)
 
