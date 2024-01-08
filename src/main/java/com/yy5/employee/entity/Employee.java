@@ -1,12 +1,17 @@
 package com.yy5.employee.entity;
 
 public class Employee {
-    private Integer employeeNumber;
+    private int employeeNumber;
     private String name;
     private int age;
 
-    public Employee(Integer employeeNumber, String name, int age) {
+    public Employee(int employeeNumber, String name, int age) {
         this.employeeNumber = employeeNumber;
+        this.name = name;
+        this.age = age;
+    }
+
+    public Employee(String name, int age) {
         this.name = name;
         this.age = age;
     }

@@ -26,7 +26,7 @@ public class EmployeeService {
     }
 
     public Employee insert (String name, int age ) {
-        Employee employee = new Employee(null, name ,age);
+        Employee employee = new Employee(name ,age);
         employeeMapper.insert(employee);
         return employee;
     }
