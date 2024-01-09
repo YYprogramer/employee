@@ -7,13 +7,20 @@
 ### CRUD処理の実装
 
 - Read処理
-  - id検索(パスパラメータ検索)の実装
+  - employeeNumber検索(パスパラメータ検索)の実装
   - 全件検索及び部分一致検索(クエリパラメータ)の実装
   - エラーハンドリングの実装
 
 
 - Create処理
-  - 今後実装
+  - 新規登録機能の実装
+  - レスポンスボディの設定
+    - ステータスコード201でレスポンス
+    - 新規登録時に「employee created」のメッセージを表示させる
+<<ここまで実装完了>>
+  - エラーハンドリング
+    - NotNull制約に違反した場合400エラーで返す
+    - Nameにバリデーションを追加する
 
 
 - Update処理
@@ -41,8 +48,11 @@ R5
 12.31　1時間
 
 R6  
-1.3　2時間
-
+1.3　2時間  
+1.4　2時間  
+1.5　2時間  
+1.8　1時間30分
+1.8　2時間
 
 ### エラーの共有と解決方法
 #### Dockerの構築ができない
@@ -110,3 +120,26 @@ Optionalは１つのレコードかNullの結果しかレスポンスしませ�
 ![Controllerクラスの修正](img/スクリーンショット 2023-12-28 4.50.08.png)
 ![Mapperクラスの修正](img/スクリーンショット 2023-12-28 4.50.20.png)
 ![Serviceクラスの修正](img/スクリーンショット 2023-12-28 4.50.31.png)
+
+#### 新規登録ができない
+エラー状態
+![ターミナルのキャプション](img/スクリーンショット 2024-01-05 4.58.05.png)
+![エラーメッセージ](img/スクリーンショット 2024-01-05 4.58.31.png)
+
+エラーメッセージ
+```
+java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because "employeeNumber" is null
+```
+
+解決方法
+
+`NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because "employeeNumber" is null`
+というエラーメッセージから、
+`employeeNumberがnullのため実行できない`
+ということが読み取れます。
+結論から言うと原因はint型でemployeeNumberを定義していることでした。
+新規登録を行う場合、Serviceクラスで一旦空のemployeeNumberを作成しておき、Mapperに渡った時insertメソッドで自動採番されます。
+ですのでemployeeNumberはnullを許容できる必要がありますがint型の場合はnullを許容できません。
+よってInteger型に変更することで、エラーを解消しました。
+![entityクラスの修正](img/スクリーンショット 2024-01-05 5.36.55.png)
+
