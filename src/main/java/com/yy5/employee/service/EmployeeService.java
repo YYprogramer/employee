@@ -28,7 +28,7 @@ public class EmployeeService {
 
     public Employee insert (String name, Object age ) throws IllegalAccessException {
         if (!(age instanceof Integer)) {
-            throw new IllegalAccessException("年齢には整数を入力してください");
+            throw new EmployeeNotCreated("年齢には整数を入力してください");
         }
         Employee employee = new Employee(name , (Integer) age);
         employeeMapper.insert(employee);
