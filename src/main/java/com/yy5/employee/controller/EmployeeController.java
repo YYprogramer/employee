@@ -14,10 +14,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.time.ZonedDateTime;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.logging.ErrorManager;
 
 @RestController
 public class EmployeeController {
@@ -46,10 +44,17 @@ public class EmployeeController {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
     @PostMapping("/employees")
-    public ResponseEntity<EmployeeResponse> insert(@RequestBody EmployeeRequest employeeRequest, UriComponentsBuilder uriBuilder) {
-        Employee employee = employeeService.insert(employeeRequest.getName(),employeeRequest.getAge());
-        URI location = uriBuilder.path("employees/{employeeNumber}").buildAndExpand(employee.getEmployeeNumber()).toUri();
-        EmployeeResponse body = new EmployeeResponse("employee created");
-        return ResponseEntity.created(location).body(body);
+    public ResponseEntity<?> insert(@RequestBody EmployeeRequest employeeRequest, UriComponentsBuilder uriBuilder) throws IllegalAccessException {
+        try {
+            Employee employee = employeeService.insert(employeeRequest.getName(),employeeRequest.getAge());
+            URI location = uriBuilder.path("employees/{employeeNumber}").buildAndExpand(employee.getEmployeeNumber()).toUri();
+            EmployeeResponse body = new EmployeeResponse("employee created");
+            return ResponseEntity.created(location).body(body);
+        } catch (IllegalAccessException e) {
+            ErrorManager log = new ErrorManager();
+            EmployeeResponse errorBody = new EmployeeResponse(e.getMessage());
+            return new ResponseEntity<>(errorBody, HttpStatus.BAD_REQUEST);
+        }
+
     }
 }
