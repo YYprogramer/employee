@@ -1,7 +1,11 @@
 package com.yy5.employee.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class EmployeeRequest {
+    @NotBlank
     private String name;
+    @NotBlank
     private int age;
 
     public EmployeeRequest(String name, int age) {
