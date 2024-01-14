@@ -37,7 +37,7 @@ public class EmployeeController {
     @ExceptionHandler(value  = EmployeeNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleEmployeeNotFoundException(
             EmployeeNotFoundException e, HttpServletRequest request) {
-        Map<String, String> body = new LinkedHashMap<>();  // LinkedHashMapを使用する
+        Map<String, String> body = new LinkedHashMap<>();
         body.put("timestamp", ZonedDateTime.now().toString());
         body.put("status", String.valueOf(HttpStatus.NOT_FOUND.value()));
         body.put("error", HttpStatus.NOT_FOUND.getReasonPhrase());
