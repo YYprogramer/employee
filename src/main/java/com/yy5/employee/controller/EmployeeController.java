@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,7 +32,7 @@ public class EmployeeController {
         return employeeService.findAll();
     }
     @GetMapping("/employees/{employeeNumber}")
-    public Employee getEmployee(@PathVariable("employeeNumber") int employeeNumber) {
+    public Employee getEmployee(@Validated @PathVariable("employeeNumber") int employeeNumber) {
         return employeeService.findEmployee(employeeNumber);
     }
     @ExceptionHandler(value  = EmployeeNotFoundException.class)
@@ -46,7 +47,7 @@ public class EmployeeController {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
     @PostMapping("/employees")
-    public ResponseEntity<?> insert(@RequestBody @Valid EmployeeRequest employeeRequest, UriComponentsBuilder uriBuilder) throws IllegalAccessException {
+    public ResponseEntity<?> insert(@RequestBody @Validated EmployeeRequest employeeRequest, UriComponentsBuilder uriBuilder) throws IllegalAccessException {
             Employee employee = employeeService.insert(employeeRequest.getName(),employeeRequest.getAge());
             URI location = uriBuilder.path("employees/{employeeNumber}").buildAndExpand(employee.getEmployeeNumber()).toUri();
             EmployeeResponse body = new EmployeeResponse("employee created");
