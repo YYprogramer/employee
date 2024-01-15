@@ -1,10 +1,13 @@
 package com.yy5.employee.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class EmployeeRequest {
+    @NotNull
     @NotBlank
     private String name;
+    @NotNull
     @NotBlank
     private int age;
 
