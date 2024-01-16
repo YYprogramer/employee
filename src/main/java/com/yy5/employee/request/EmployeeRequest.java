@@ -8,7 +8,6 @@ public class EmployeeRequest {
     @NotBlank
     private String name;
     @NotNull
-    @NotBlank
     private int age;
 
     public EmployeeRequest(String name, int age) {
