@@ -6,6 +6,7 @@ import com.yy5.employee.NotFound.EmployeeNotFoundException;
 import com.yy5.employee.entity.Employee;
 import com.yy5.employee.mapper.EmployeeMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +28,7 @@ public class EmployeeService {
                 .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber:" + employeeNumber +" is not found"));
     }
 
-    public Employee insert (String name, Object age ) throws IllegalAccessException {
+    public Employee insert (String name, Object age ) throws MethodArgumentNotValidException {
         if (!(age instanceof Integer)) {
             throw new EmployeeNotCreated("年齢には整数を入力してください");
         }

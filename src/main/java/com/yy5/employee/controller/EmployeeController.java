@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -47,7 +48,7 @@ public class EmployeeController {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
     @PostMapping("/employees")
-    public ResponseEntity<?> insert(@RequestBody @Validated EmployeeRequest employeeRequest, UriComponentsBuilder uriBuilder) throws IllegalAccessException {
+    public ResponseEntity<?> insert(@RequestBody @Validated EmployeeRequest employeeRequest, UriComponentsBuilder uriBuilder) throws MethodArgumentNotValidException {
             Employee employee = employeeService.insert(employeeRequest.getName(),employeeRequest.getAge());
             URI location = uriBuilder.path("employees/{employeeNumber}").buildAndExpand(employee.getEmployeeNumber()).toUri();
             EmployeeResponse body = new EmployeeResponse("employee created");
