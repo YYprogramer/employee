@@ -8,9 +8,9 @@ public class EmployeeRequest {
     @NotBlank
     private String name;
     @NotNull
-    private int age;
+    private Integer age;
 
-    public EmployeeRequest(String name, int age) {
+    public EmployeeRequest(String name, Integer age) {
         this.name = name;
         this.age = age;
     }
