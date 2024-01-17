@@ -7,7 +7,6 @@ import com.yy5.employee.request.EmployeeRequest;
 import com.yy5.employee.response.EmployeeResponse;
 import com.yy5.employee.service.EmployeeService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
