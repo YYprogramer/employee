@@ -1,7 +1,6 @@
 package com.yy5.employee.controller;
 
-import com.yy5.employee.NotCreated.EmployeeNotCreated;
-import com.yy5.employee.NotFound.EmployeeNotFoundException;
+import com.yy5.employee.notfound.EmployeeNotFoundException;
 import com.yy5.employee.entity.Employee;
 import com.yy5.employee.request.EmployeeRequest;
 import com.yy5.employee.response.EmployeeResponse;
@@ -12,13 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.logging.ErrorManager;
 
 @RestController
 public class EmployeeController {
