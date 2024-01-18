@@ -1,4 +1,4 @@
-package com.yy5.employee.NotCreated;
+package com.yy5.employee.notcreated;
 
 public class EmployeeNotCreated extends RuntimeException {
     public EmployeeNotCreated (String message) {

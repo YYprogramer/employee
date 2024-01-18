@@ -1,4 +1,4 @@
-package com.yy5.employee.NotFound;
+package com.yy5.employee.notfound;
 
 public class EmployeeNotFoundException extends RuntimeException {
     public EmployeeNotFoundException(String message) {
