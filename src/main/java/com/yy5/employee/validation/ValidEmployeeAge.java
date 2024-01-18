@@ -1,5 +1,6 @@
 package com.yy5.employee.validation;
 
+import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import jakarta.validation.ReportAsSingleViolation;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.lang.annotation.Target;
 
 @Deprecated
 @NotNull
+@Constraint(validatedBy = {})
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @ReportAsSingleViolation

@@ -1,5 +1,6 @@
 package com.yy5.employee.request;
 
+import com.yy5.employee.validation.ValidEmployeeAge;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -7,7 +8,7 @@ public class EmployeeRequest {
     @NotNull
     @NotBlank
     private String name;
-    @NotNull
+    @ValidEmployeeAge
     private Integer age;
 
     public EmployeeRequest(String name, Integer age) {
