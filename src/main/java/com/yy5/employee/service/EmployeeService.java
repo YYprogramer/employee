@@ -1,7 +1,6 @@
 package com.yy5.employee.service;
 
 
-import com.yy5.employee.notcreated.EmployeeNotCreated;
 import com.yy5.employee.notfound.EmployeeNotFoundException;
 import com.yy5.employee.entity.Employee;
 import com.yy5.employee.mapper.EmployeeMapper;
@@ -28,9 +27,6 @@ public class EmployeeService {
     }
 
     public Employee insert (String name, Object age ) throws MethodArgumentNotValidException {
-        if (!(age instanceof Integer)) {
-            throw new EmployeeNotCreated("年齢には整数を入力してください");
-        }
         Employee employee = new Employee(name , (Integer) age);
         employeeMapper.insert(employee);
         return employee;
