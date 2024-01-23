@@ -62,7 +62,8 @@ R6
 1.18　2時間  
 1.19　2時間  
 1.22　1時間  
-1.23　2時間
+1.23　2時間  
+1.24　1時間
 
 ### エラーの共有と解決方法
 #### Dockerの構築ができない
@@ -165,3 +166,9 @@ java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" bec
 
 解決方法
 ageカラムにバリデーションを設ける。
+
+#### @NotBlankでは全角スペースに対応していない
+エラー内容  
+Ageカラムが全角スペースでリクエストを送った場合、バリデーションが実行されず、４００Bad _Requestメッセージが返される。
+
+解決方法
