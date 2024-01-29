@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class EmployeeRequest {
-    @NotNull
     @NotBlank
     private String name;
     @ValidEmployeeAge
