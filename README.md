@@ -167,9 +167,3 @@ java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" bec
 
 解決方法
 ageカラムにバリデーションを設ける。
-
-#### @NotBlankでは全角スペースに対応していない
-エラー内容  
-Ageカラムが全角スペースでリクエストを送った場合、バリデーションが実行されず、４００Bad _Requestメッセージが返される。
-
-解決方法
