@@ -15,7 +15,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class EmployeeController {
@@ -44,7 +46,7 @@ public class EmployeeController {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
     @PostMapping("/employees")
-    public ResponseEntity<?> insert(@RequestBody @Validated EmployeeRequest employeeRequest, UriComponentsBuilder uriBuilder) throws MethodArgumentNotValidException {
+    public ResponseEntity<EmployeeResponse> insert(@RequestBody @Validated EmployeeRequest employeeRequest, UriComponentsBuilder uriBuilder) throws MethodArgumentNotValidException {
             Employee employee = employeeService.insert(employeeRequest.getName(),employeeRequest.getAge());
             URI location = uriBuilder.path("employees/{employeeNumber}").buildAndExpand(employee.getEmployeeNumber()).toUri();
             EmployeeResponse body = new EmployeeResponse("employee created");
