@@ -26,8 +26,8 @@ public class EmployeeService {
                 .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber:" + employeeNumber +" is not found"));
     }
 
-    public Employee insert (String name, Object age ) throws MethodArgumentNotValidException {
-        Employee employee = new Employee(name , (Integer) age);
+    public Employee insert (String name, int age ) {
+        Employee employee = new Employee(name , age);
         employeeMapper.insert(employee);
         return employee;
     }
