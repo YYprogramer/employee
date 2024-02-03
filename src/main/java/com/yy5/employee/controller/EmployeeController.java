@@ -46,7 +46,7 @@ public class EmployeeController {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
     @PostMapping("/employees")
-    public ResponseEntity<EmployeeResponse> insert(@RequestBody @Validated EmployeeRequest employeeRequest, UriComponentsBuilder uriBuilder) throws MethodArgumentNotValidException {
+    public ResponseEntity<EmployeeResponse> insert(@RequestBody @Validated EmployeeRequest employeeRequest, UriComponentsBuilder uriBuilder)  {
             Employee employee = employeeService.insert(employeeRequest.getName(),employeeRequest.getAge());
             URI location = uriBuilder.path("employees/{employeeNumber}").buildAndExpand(employee.getEmployeeNumber()).toUri();
             EmployeeResponse body = new EmployeeResponse("employee created");
