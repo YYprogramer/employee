@@ -35,7 +35,7 @@ public class EmployeeController {
         return employeeService.findEmployee(employeeNumber);
     }
 
-    @ExceptionHandler(value  = EmployeeNotFoundException.class)
+    @ExceptionHandler(value = EmployeeNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleEmployeeNotFoundException(
             EmployeeNotFoundException e, HttpServletRequest request) {
         Map<String, String> body = new LinkedHashMap<>();
