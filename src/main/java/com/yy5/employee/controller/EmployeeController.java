@@ -29,10 +29,12 @@ public class EmployeeController {
     public List<Employee> getAll() {
         return employeeService.findAll();
     }
+
     @GetMapping("/employees/{employeeNumber}")
     public Employee getEmployee(@PathVariable("employeeNumber") int employeeNumber) {
         return employeeService.findEmployee(employeeNumber);
     }
+
     @ExceptionHandler(value  = EmployeeNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleEmployeeNotFoundException(
             EmployeeNotFoundException e, HttpServletRequest request) {
@@ -44,6 +46,7 @@ public class EmployeeController {
         body.put("path", request.getRequestURI());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
     @PostMapping("/employees")
     public ResponseEntity<EmployeeResponse> insert(@RequestBody @Validated EmployeeRequest employeeRequest, UriComponentsBuilder uriBuilder)  {
             Employee employee = employeeService.insert(employeeRequest.getName(),employeeRequest.getAge());
