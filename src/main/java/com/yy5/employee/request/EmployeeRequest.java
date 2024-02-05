@@ -1,10 +1,15 @@
 package com.yy5.employee.request;
 
-public class EmployeeRequest {
-    private String name;
-    private int age;
+import com.yy5.employee.validation.ValidEmployeeAge;
+import com.yy5.employee.validation.ValidEmployeeName;
 
-    public EmployeeRequest(String name, int age) {
+public class EmployeeRequest {
+    @ValidEmployeeName
+    private String name;
+    @ValidEmployeeAge
+    private Integer age;
+
+    public EmployeeRequest(String name, Integer age) {
         this.name = name;
         this.age = age;
     }
