@@ -31,5 +31,25 @@ public class EmployeeService {
         employeeMapper.insert(employee);
         return employee;
     }
+
+    public void update(int employeeNumber, String name, Integer age) throws EmployeeNotFoundException {
+        Employee employee = findEmployee(employeeNumber);
+        if (employee == null) {
+            throw new EmployeeNotFoundException("employeeNumberが" + employeeNumber + "の社員は存在しません");
+        }
+        validateUpdateParameters(name,age);
+        employeeMapper.update(employeeNumber, name, age);
+    }
+    public void validateUpdateParameters(String name, Integer age) {
+        // nameがnullもしくは空白の場合
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("名前は必須です");
+        }
+
+        // ageがnullの場合
+        if (age == null ) {
+            throw new IllegalArgumentException("年齢は必須です");
+        }
+    }
 }
 
