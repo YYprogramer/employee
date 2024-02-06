@@ -54,4 +54,10 @@ public class EmployeeController {
             EmployeeResponse body = new EmployeeResponse("employee created");
             return ResponseEntity.created(location).body(body);
     }
+
+    @PatchMapping("/employees/{employeeNumber}")
+    public  ResponseEntity<EmployeeResponse> updateEmployee(@PathVariable int employeeNumber @RequestBody EmployeeRequest employeeRequest) throws EmployeeNotFoundException {
+        employeeService.updateEmployee(employeeNumber, employeeRequest.getName(), employeeRequest.getAge());
+        return new EmployeeResponse("社員情報を更新しました");
+    }
 }
