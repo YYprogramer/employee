@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +21,7 @@ public interface EmployeeMapper {
     @Insert("INSERT INTO employees (name, age) VALUES (#{name}, #{age})")
     @Options(useGeneratedKeys = true, keyProperty = "employeeNumber")
     void insert(Employee employee);
+
+    @Update("UPDATE employees SET name = #{name}, age = #{age}, WHERE id = #{employeeNumber}")
+    void update(int employeeNumber, String name, Integer age);
 }
