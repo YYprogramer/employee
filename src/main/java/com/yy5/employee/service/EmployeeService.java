@@ -37,17 +37,21 @@ public class EmployeeService {
         if (employee == null) {
             throw new EmployeeNotFoundException("employeeNumberが" + employeeNumber + "の社員は存在しません");
         }
-        validateUpdateParameters(name,age);
+        validateUpdateParameters(name, age);
+        performUpdate(employeeNumber, name, age);
+    }
+
+    private void performUpdate(int employeeNumber, String name, Integer age) {
         employeeMapper.update(employeeNumber, name, age);
     }
+
     public void validateUpdateParameters(String name, Integer age) {
         // nameがnullもしくは空白の場合
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("名前は必須です");
         }
-
         // ageがnullの場合
-        if (age == null ) {
+        if (age == null) {
             throw new IllegalArgumentException("年齢は必須です");
         }
     }
