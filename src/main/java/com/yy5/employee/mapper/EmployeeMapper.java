@@ -22,6 +22,6 @@ public interface EmployeeMapper {
     @Options(useGeneratedKeys = true, keyProperty = "employeeNumber")
     void insert(Employee employee);
 
-    @Update("UPDATE employees SET name = #{name}, age = #{age}, WHERE id = #{employeeNumber}")
+    @Update("UPDATE employees SET name = #{name}, age = #{age} WHERE employeeNumber = #{employeeNumber}")
     void update(int employeeNumber, String name, Integer age);
 }
