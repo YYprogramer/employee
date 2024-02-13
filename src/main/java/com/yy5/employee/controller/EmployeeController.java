@@ -62,8 +62,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("/employees/{employeeNumber}")
-    public  EmployeeResponse update(@RequestBody @Validated @PathVariable int employeeNumber, EmployeeRequest updateEemployeeRequest) throws EmployeeNotFoundException {
-        Employee employeeRequest;
+    public  EmployeeResponse update(@PathVariable int employeeNumber, @RequestBody @Validated EmployeeRequest updateEemployeeRequest) throws EmployeeNotFoundException {
         employeeService.update(employeeNumber, updateEemployeeRequest.getName(), updateEemployeeRequest.getAge());
         return new EmployeeResponse("社員情報を更新しました");
     }
