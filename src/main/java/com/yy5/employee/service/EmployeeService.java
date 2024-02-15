@@ -36,10 +36,6 @@ public class EmployeeService {
                 .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber " + employeeNumber + " is not found"));
 
         validateUpdateParameters(name, age);
-        performUpdate(employeeNumber, name, age);
-    }
-
-    private void performUpdate(int employeeNumber, String name, Integer age) {
         employeeMapper.update(employeeNumber, name, age);
     }
 
