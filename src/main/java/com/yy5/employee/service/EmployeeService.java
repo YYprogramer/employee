@@ -34,20 +34,7 @@ public class EmployeeService {
     public void update(int employeeNumber, String name, Integer age) throws EmployeeNotFoundException {
         Employee employee = this.employeeMapper.findByEmployee(employeeNumber)
                 .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber " + employeeNumber + " is not found"));
-
-        validateUpdateParameters(name, age);
         employeeMapper.update(employeeNumber, name, age);
-    }
-
-    public void validateUpdateParameters(String name, Integer age) {
-        // nameがnullもしくは空白の場合
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("名前は必須です");
-        }
-        // ageがnullの場合
-        if (age == null) {
-            throw new IllegalArgumentException("年齢は必須です");
-        }
     }
 }
 
