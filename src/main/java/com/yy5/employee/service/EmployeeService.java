@@ -1,7 +1,7 @@
 package com.yy5.employee.service;
 
 
-import com.yy5.employee.notfound.EmployeeNotFoundException;
+import com.yy5.employee.controller.notfound.EmployeeNotFoundException;
 import com.yy5.employee.entity.Employee;
 import com.yy5.employee.mapper.EmployeeMapper;
 import org.springframework.stereotype.Service;

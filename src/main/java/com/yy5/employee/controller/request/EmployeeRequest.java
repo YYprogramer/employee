@@ -1,4 +1,4 @@
-package com.yy5.employee.request;
+package com.yy5.employee.controller.request;
 
 import com.yy5.employee.validation.ValidEmployeeAge;
 import com.yy5.employee.validation.ValidEmployeeName;

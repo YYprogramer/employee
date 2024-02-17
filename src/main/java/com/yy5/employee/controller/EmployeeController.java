@@ -1,9 +1,9 @@
 package com.yy5.employee.controller;
 
-import com.yy5.employee.notfound.EmployeeNotFoundException;
+import com.yy5.employee.controller.notfound.EmployeeNotFoundException;
 import com.yy5.employee.entity.Employee;
-import com.yy5.employee.request.EmployeeRequest;
-import com.yy5.employee.response.EmployeeResponse;
+import com.yy5.employee.controller.request.EmployeeRequest;
+import com.yy5.employee.controller.response.EmployeeResponse;
 import com.yy5.employee.service.EmployeeService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;

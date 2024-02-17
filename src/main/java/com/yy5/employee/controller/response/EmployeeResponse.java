@@ -1,4 +1,4 @@
-package com.yy5.employee.response;
+package com.yy5.employee.controller.response;
 
 public class EmployeeResponse {
     private String message;
