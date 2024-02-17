@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -62,8 +63,15 @@ public class EmployeeController {
     }
 
     @PatchMapping("/employees/{employeeNumber}")
-    public  EmployeeResponse update(@PathVariable int employeeNumber, @RequestBody @Validated EmployeeRequest updateEemployeeRequest) throws EmployeeNotFoundException {
+    public EmployeeResponse update(@PathVariable int employeeNumber, @RequestBody @Validated EmployeeRequest updateEemployeeRequest) throws EmployeeNotFoundException {
         employeeService.update(employeeNumber, updateEemployeeRequest.getName(), updateEemployeeRequest.getAge());
         return new EmployeeResponse("社員情報を更新しました");
+    }
+
+    @DeleteMapping("/employees/{employeeNumber}")
+    public ResponseEntity<EmployeeResponse> delete(@PathVariable("employeeNumber") Integer id) {
+        Employee employee = employeeService.delete(employeeNumber);
+        EmployeeResponse body = new EmployeeResponse("Employee  deleted");
+        return ResponseEntity.ok(body);
     }
 }
