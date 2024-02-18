@@ -37,10 +37,9 @@ public class EmployeeService {
         employeeMapper.update(employeeNumber, name, age);
     }
 
-    public Employee delete(Integer employeeNumber) {
+    public void delete(Integer employeeNumber) {
         Employee employee = this.employeeMapper.findByEmployee(employeeNumber)
                 .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber " + employeeNumber + " is not found"));
         employeeMapper.delete(employeeNumber);
-        return employee;
     }
 }
