@@ -1,6 +1,7 @@
 package com.yy5.employee.mapper;
 
 import com.yy5.employee.entity.Employee;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -24,4 +25,7 @@ public interface EmployeeMapper {
 
     @Update("UPDATE employees SET name = #{name}, age = #{age} WHERE employeeNumber = #{employeeNumber}")
     void update(int employeeNumber, String name, Integer age);
+
+    @Delete("DELETE FROM employees WHERE employeeNumber = #{employeeNumber}")
+    void delete(Integer employeeNumber);
 }

@@ -36,5 +36,10 @@ public class EmployeeService {
                 .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber " + employeeNumber + " is not found"));
         employeeMapper.update(employeeNumber, name, age);
     }
-}
 
+    public void delete(Integer employeeNumber) {
+        Employee employee = this.employeeMapper.findByEmployee(employeeNumber)
+                .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber " + employeeNumber + " is not found"));
+        employeeMapper.delete(employeeNumber);
+    }
+}
