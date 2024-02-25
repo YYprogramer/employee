@@ -16,7 +16,7 @@ public interface EmployeeMapper {
     @Select("select * from employees")
     List<Employee> findAll();
 
-    @Select("select * from employees WHERE employeeNumber LIKE CONCAT('%', #{employeeNumber}, '%')")
+    @Select("select * from employees WHERE employeeNumber = #{employeeNumber}")
     Optional<Employee> findByEmployee(int employeeNumber);
 
     @Insert("INSERT INTO employees (name, age) VALUES (#{name}, #{age})")
