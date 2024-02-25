@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,5 +38,13 @@ class EmployeeServiceTest {
         List<Employee> actual = employeeService.findAll();
         assertThat(actual).isEqualTo(employees);
         verify(employeeMapper).findAll();
+    }
+
+    @Test
+    void 存在する社員番号を検索した場合に社員の名前と年齢の情報が取得できること() {
+        doReturn(Optional.of(new Employee(1,"テスト1",21))).when(employeeMapper).findByEmployee(1);
+        Employee actual = employeeService.findEmployee(1);
+        assertThat(actual).isEqualTo(new Employee(1,"テスト1",21));
+        verify(employeeMapper).findByEmployee(1);
     }
 }
