@@ -1,6 +1,6 @@
 employees:
   - employeesNumber: 1
-    name: "テスト１"
+    name: "テスト1"
     age: 21
   - employeesNumber: 2
     name: "テスト2"
