@@ -26,8 +26,9 @@ class EmployeeServiceTest {
     @Mock
     EmployeeMapper employeeMapper;
 
-    //Read機能のテスト
+    // Read機能のテスト
     @Test
+    // Readテスト 全件取得
     void 社員情報が全件取得できること() {
         List<Employee> employees = List.of(
                 new Employee("テスト1", 21),
@@ -42,6 +43,7 @@ class EmployeeServiceTest {
     }
 
     @Test
+    // Readテスト 社員番号で検索 成功
     void 存在する社員番号を検索した場合に社員の名前と年齢の情報が取得できること() {
         doReturn(Optional.of(new Employee(1,"テスト1",21))).when(employeeMapper).findByEmployee(1);
         Employee actual = employeeService.findEmployee(1);
@@ -50,6 +52,7 @@ class EmployeeServiceTest {
     }
 
     @Test
+    // Readテスト 社員番号で検索 失敗
     void 存在しない社員番号を検索した場合に例外処理が動作すること() throws EmployeeNotFoundException {
         doReturn(Optional.empty()).when(employeeMapper).findByEmployee(99);
         assertThrows(EmployeeNotFoundException.class,() -> {
