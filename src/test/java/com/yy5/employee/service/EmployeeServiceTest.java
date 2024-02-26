@@ -1,5 +1,6 @@
 package com.yy5.employee.service;
 
+import com.yy5.employee.controller.notfound.EmployeeNotFoundException;
 import com.yy5.employee.entity.Employee;
 import com.yy5.employee.mapper.EmployeeMapper;
 import org.junit.jupiter.api.Test;
@@ -46,5 +47,14 @@ class EmployeeServiceTest {
         Employee actual = employeeService.findEmployee(1);
         assertThat(actual).isEqualTo(new Employee(1,"テスト1",21));
         verify(employeeMapper).findByEmployee(1);
+    }
+
+    @Test
+    void 存在しない社員番号を検索した場合に例外処理が動作すること() throws EmployeeNotFoundException {
+        doReturn(Optional.empty()).when(employeeMapper).findByEmployee(99);
+        assertThrows(EmployeeNotFoundException.class,() -> {
+            employeeService.findEmployee(99);
+        });
+        verify(employeeMapper).findByEmployee(99);
     }
 }
