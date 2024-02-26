@@ -30,9 +30,9 @@ class EmployeeMapperTest {
         assertThat(employees)
                 .hasSize(3)
                 .contains(
-                        new Employee(1,"テスト1",21),
-                        new Employee(2,"テスト2",22),
-                        new Employee(3,"テスト3",23)
+                        new Employee(1,"スティーブ",21),
+                        new Employee(2,"マーク",20),
+                        new Employee(3,"ジェフ",30)
                 );
     }
 
