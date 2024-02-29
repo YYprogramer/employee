@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,4 +37,12 @@ class EmployeeMapperTest {
                 );
     }
 
+    // Readテスト 条件一致取得
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 存在する社員番号を検索した時に正常な社員情報が取得できること() {
+        Optional<Employee> employees = employeeMapper.findByEmployee(1);
+        assertThat(employees).contains(new Employee(1,"スティーブ",21));
+    }
 }
