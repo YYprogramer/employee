@@ -1,10 +1,10 @@
 employees:
-  - employeesNumber: 1
+  - employeeNumber: 1
     name: "スティーブ"
     age: 21
-  - employeesNumber: 2
+  - employeeNumber: 2
     name: "マーク"
     age: 20
-  - employeesNumber: 3
+  - employeeNumber: 3
     name: "ジェフ"
     age: 30
