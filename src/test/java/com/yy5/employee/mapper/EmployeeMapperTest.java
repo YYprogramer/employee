@@ -37,12 +37,21 @@ class EmployeeMapperTest {
                 );
     }
 
-    // Readテスト 条件一致取得
+    // Readテスト 指定した社員番号が存在する場合
     @Test
     @DataSet(value = "datasets/employees.yml")
     @Transactional
     void 存在する社員番号を検索した時に正常な社員情報が取得できること() {
         Optional<Employee> employees = employeeMapper.findByEmployee(1);
         assertThat(employees).contains(new Employee(1,"スティーブ",21));
+    }
+
+    // Readテスト 指定した社員番号が存在しない場合
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 存在しない社員番号を検索した時にからの情報をレスポンスすること() {
+        Optional<Employee> employees = employeeMapper.findByEmployee(4);
+        assertThat(employees).isEmpty();
     }
 }
