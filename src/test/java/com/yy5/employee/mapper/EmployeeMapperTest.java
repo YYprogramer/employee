@@ -47,7 +47,7 @@ class EmployeeMapperTest {
     // Readテスト 指定した社員番号が存在しない場合
     @Test
     @Transactional
-    void 存在しない社員番号を検索した時にからの情報をレスポンスすること() {
+    void 存在しない社員番号を検索した時に空の情報をレスポンスすること() {
         Optional<Employee> employees = employeeMapper.findByEmployee(4);
         assertThat(employees).isEmpty();
     }
