@@ -4,6 +4,6 @@ properties:
   schema: employee_list
 caseInsensitiveStrategy: LOWERCASE
 connectionConfig:
-  url: "jdbc:mysql://localhost:3307/employee_list" # MySQLの場合
+  url: "jdbc:mysql://localhost:3306/employee_list" # MySQLの場合
   user: "user"
   password: "password"
