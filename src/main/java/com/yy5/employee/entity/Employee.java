@@ -44,8 +44,12 @@ public class Employee {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        };
+        if (o == null || getClass() != o.getClass())  {
+            return false;
+        };
         Employee employee = (Employee) o;
         return employeeNumber == employee.employeeNumber && age == employee.age && Objects.equals(name, employee.name);
     }
