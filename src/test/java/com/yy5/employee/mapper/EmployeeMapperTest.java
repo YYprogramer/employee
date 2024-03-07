@@ -22,7 +22,6 @@ class EmployeeMapperTest {
     @Autowired
     EmployeeMapper employeeMapper;
 
-    // Readテスト 全件取得
     @Test
     @Transactional
     void 全ての社員情報が取得できること() {
@@ -36,7 +35,6 @@ class EmployeeMapperTest {
                 );
     }
 
-    // Readテスト 指定した社員番号が存在する場合
     @Test
     @Transactional
     void 存在する社員番号を検索した時に正常な社員情報が取得できること() {
@@ -44,7 +42,6 @@ class EmployeeMapperTest {
         assertThat(employees).contains(new Employee(1,"スティーブ",21));
     }
 
-    // Readテスト 指定した社員番号が存在しない場合
     @Test
     @Transactional
     void 存在しない社員番号を検索した時に空の情報をレスポンスすること() {
