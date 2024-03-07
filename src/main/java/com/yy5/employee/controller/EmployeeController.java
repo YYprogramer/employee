@@ -39,7 +39,7 @@ public class EmployeeController {
 
     @GetMapping("/employees/{employeeNumber}")
     public Employee getEmployee(@PathVariable("employeeNumber") int employeeNumber) {
-        return employeeService.findEmployee(employeeNumber);
+        return employeeService.findById(employeeNumber);
     }
 
     @ExceptionHandler(value = EmployeeNotFoundException.class)
