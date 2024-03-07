@@ -43,19 +43,19 @@ class EmployeeServiceTest {
     @Test
     // Readテスト 社員番号で検索 成功
     void 存在する社員番号を検索した場合に社員の名前と年齢の情報が取得できること() {
-        doReturn(Optional.of(new Employee(1,"テスト1",21))).when(employeeMapper).findByEmployee(1);
-        Employee actual = employeeService.findEmployee(1);
+        doReturn(Optional.of(new Employee(1,"テスト1",21))).when(employeeMapper).findById(1);
+        Employee actual = employeeService.findById(1);
         assertThat(actual).isEqualTo(new Employee(1,"テスト1",21));
-        verify(employeeMapper).findByEmployee(1);
+        verify(employeeMapper).findById(1);
     }
 
     @Test
     // Readテスト 社員番号で検索 失敗
     void 存在しない社員番号を検索した場合に例外処理が動作すること() throws EmployeeNotFoundException {
-        doReturn(Optional.empty()).when(employeeMapper).findByEmployee(99);
+        doReturn(Optional.empty()).when(employeeMapper).findById(99);
         assertThrows(EmployeeNotFoundException.class,() -> {
-            employeeService.findEmployee(99);
+            employeeService.findById(99);
         });
-        verify(employeeMapper).findByEmployee(99);
+        verify(employeeMapper).findById(99);
     }
 }

@@ -131,7 +131,7 @@ ERROR: Encountered errors while bringing up the project.
 ```
 ### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Table 'employee_list.employee_list' doesn't exist
 ### The error may exist in com/yy5/employee/mapper/EmployeeMapper.java (best guess)
-### The error may involve com.yy5.employee.mapper.EmployeeMapper.findByEmployee-Inline
+### The error may involve findById-Inline
 ### The error occurred while setting parameters
 ### SQL: select * from employee_list WHERE employeeNumber LIKE CONCAT('%', ?, '%')
 ### Cause: java.sql.SQLSyntaxErrorException: Table 'employee_list.employee_list' doesn't exist

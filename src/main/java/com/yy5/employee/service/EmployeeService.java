@@ -20,8 +20,8 @@ public class EmployeeService {
         return this.employeeMapper.findAll();
     }
 
-    public Employee findEmployee(int employeeNumber){
-        Optional<Employee> employee = this.employeeMapper.findByEmployee(employeeNumber);
+    public Employee findById (int employeeNumber){
+        Optional<Employee> employee = this.employeeMapper.findById(employeeNumber);
         return employee
                 .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber:" + employeeNumber +" is not found"));
     }
@@ -33,13 +33,13 @@ public class EmployeeService {
     }
 
     public void update(int employeeNumber, String name, Integer age) throws EmployeeNotFoundException {
-        Employee employee = this.employeeMapper.findByEmployee(employeeNumber)
+        Employee employee = this.employeeMapper.findById(employeeNumber)
                 .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber " + employeeNumber + " is not found"));
         employeeMapper.update(employeeNumber, name, age);
     }
 
     public void delete(Integer employeeNumber) {
-        Employee employee = this.employeeMapper.findByEmployee(employeeNumber)
+        Employee employee = this.employeeMapper.findById(employeeNumber)
                 .orElseThrow(() -> new EmployeeNotFoundException("EmployeeNumber " + employeeNumber + " is not found"));
         employeeMapper.delete(employeeNumber);
     }

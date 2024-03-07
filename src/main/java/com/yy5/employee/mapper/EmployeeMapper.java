@@ -17,7 +17,7 @@ public interface EmployeeMapper {
     List<Employee> findAll();
 
     @Select("select * from employees WHERE employeeNumber = #{employeeNumber}")
-    Optional<Employee> findByEmployee(int employeeNumber);
+    Optional<Employee> findById(int employeeNumber);
 
     @Insert("INSERT INTO employees (name, age) VALUES (#{name}, #{age})")
     @Options(useGeneratedKeys = true, keyProperty = "employeeNumber")
