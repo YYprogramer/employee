@@ -97,6 +97,11 @@ R6
 2.18　2時間  
 2.19　1時間  
 2.20　1時間  
+2.26　2時間  
+2.27　2時間  
+3.4　2時間  
+3.5　2時間  
+3.6　2時間  
 
 ### エラーの共有と解決方法
 #### Dockerの構築ができない
@@ -126,7 +131,7 @@ ERROR: Encountered errors while bringing up the project.
 ```
 ### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Table 'employee_list.employee_list' doesn't exist
 ### The error may exist in com/yy5/employee/mapper/EmployeeMapper.java (best guess)
-### The error may involve com.yy5.employee.mapper.EmployeeMapper.findByEmployee-Inline
+### The error may involve findById-Inline
 ### The error occurred while setting parameters
 ### SQL: select * from employee_list WHERE employeeNumber LIKE CONCAT('%', ?, '%')
 ### Cause: java.sql.SQLSyntaxErrorException: Table 'employee_list.employee_list' doesn't exist
