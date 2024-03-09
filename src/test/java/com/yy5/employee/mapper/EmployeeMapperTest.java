@@ -1,6 +1,7 @@
 package com.yy5.employee.mapper;
 
 import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.spring.api.DBRider;
 import com.yy5.employee.entity.Employee;
 import org.junit.jupiter.api.Test;
@@ -47,5 +48,13 @@ class EmployeeMapperTest {
     void 存在しない社員番号を検索した時に空の情報をレスポンスすること() {
         Optional<Employee> employees = employeeMapper.findById(4);
         assertThat(employees).isEmpty();
+    }
+
+    @Test
+    @ExpectedDataSet(value = "datasets/insertEmployeeTest.yml", ignoreCols = "employeeNumber")
+    @Transactional
+    public void クリエイトリクエストが行われ得たとき新しい社員が登録できること() {
+        Employee employee = new Employee("iwatsuki",29);
+        employeeMapper.insert(employee);
     }
 }
