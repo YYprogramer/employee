@@ -14,8 +14,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EmployeeServiceTest {
@@ -54,5 +53,12 @@ class EmployeeServiceTest {
             employeeService.findById(99);
         });
         verify(employeeMapper).findById(99);
+    }
+
+    @Test
+    void クリエイトリクエストを受け取ったとき社員情報を登録すること() {
+        Employee employee = new Employee("iwatsuki",29);
+        assertThat(employeeService.insert("iwatsuki",29)).isEqualTo(employee);
+        verify(employeeMapper).insert(employee);
     }
 }
