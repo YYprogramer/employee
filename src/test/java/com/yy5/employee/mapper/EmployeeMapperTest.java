@@ -53,7 +53,7 @@ class EmployeeMapperTest {
     @Test
     @ExpectedDataSet(value = "datasets/insertEmployeeTest.yml", ignoreCols = "employeeNumber")
     @Transactional
-    public void クリエイトリクエストが行われ得たとき新しい社員が登録できること() {
+    public void クリエイトリクエストを受け取ったとき新しい社員が登録できること() {
         Employee employee = new Employee("iwatsuki",29);
         employeeMapper.insert(employee);
     }
