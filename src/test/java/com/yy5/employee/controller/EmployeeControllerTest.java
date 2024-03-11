@@ -1,31 +1,49 @@
 package com.yy5.employee.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yy5.employee.controller.request.EmployeeRequest;
 import com.yy5.employee.controller.response.EmployeeResponse;
 import com.yy5.employee.entity.Employee;
 import com.yy5.employee.service.EmployeeService;
-import jakarta.validation.Constraint;
-import jakarta.validation.ConstraintViolationException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class EmployeeControllerTest {
     @InjectMocks
     private EmployeeController employeeController;
 
     @Mock
     private EmployeeService employeeService;
+
+    @Autowired
+    private MockMvc mockMvc;
+    private WebApplicationContext wac;
+
+    @BeforeEach
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+    }
 
     @Test
     void クリエイトリクエストを受け取ったとき社員情報を登録すること() {
@@ -40,9 +58,15 @@ class EmployeeControllerTest {
     }
 
     @Test
-    void クリエイトリクエストを受けっとたとき名前及び年齢情報がnullだとバリデーションが実行される() {
+    void クリエイトリクエストを受けっとたとき名前及び年齢情報がnullだとバリデーションが実行される() throws Exception {
         EmployeeRequest request = new EmployeeRequest(null,null);
-        assertThrows(ConstraintViolationException.class, () -> employeeController.insert(request, UriComponentsBuilder.newInstance()));
-        verify(employeeService, never()).insert(anyString(), anyInt());
+        String requestJson = new ObjectMapper().writeValueAsString(request);
+        MvcResult mvcResult = mockMvc.perform(post("/employees")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String responseContent = mvcResult.getResponse().getContentAsString();
+        verify(employeeService, never()).insert(anyString(),anyInt());
     }
 }
