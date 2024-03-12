@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,22 +35,27 @@ class EmployeeControllerTest {
     private EmployeeController employeeController;
 
     @Mock
+    @MockBean
     private EmployeeService employeeService;
 
     @Autowired
     private MockMvc mockMvc;
-    private WebApplicationContext wac;
 
     @BeforeEach
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(employeeController).build();
     }
 
     @Test
     void クリエイトリクエストを受け取ったとき社員情報を登録すること() {
+        //モックの設定
         when(employeeService.insert(anyString(), anyInt())).thenReturn(new Employee("iwatsuki", 29));
+
+        //テスト対象メソッドの呼び出し
         EmployeeRequest request = new EmployeeRequest("iwatsuki", 29);
         ResponseEntity<EmployeeResponse> responseEntity = employeeController.insert(request, UriComponentsBuilder.newInstance());
+
+        //検証
         verify(employeeService, times(1)).insert(eq("iwatsuki"), eq(29));
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
