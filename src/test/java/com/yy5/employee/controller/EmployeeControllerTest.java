@@ -105,4 +105,25 @@ class EmployeeControllerTest {
         String responseContent = mvcResult.getResponse().getContentAsString();
         verify(employeeService, never()).insert(anyString(),anyInt());
     }
+
+    @Test
+    void クリエイトリクエストを受けっとたとき年齢が17際だとバリデーションが実行される() throws Exception {
+        EmployeeRequest request = new EmployeeRequest("hoge",17);
+        MvcResult mvcResult = mockMvc.perform(post("/employees")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String responseContent = mvcResult.getResponse().getContentAsString();
+        verify(employeeService, never()).insert(anyString(),anyInt());
+    }
+    @Test
+    void クリエイトリクエストを受けっとたとき年齢が66際だとバリデーションが実行される() throws Exception {
+        EmployeeRequest request = new EmployeeRequest("hoge",66);
+        MvcResult mvcResult = mockMvc.perform(post("/employees")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String responseContent = mvcResult.getResponse().getContentAsString();
+        verify(employeeService, never()).insert(anyString(),anyInt());
+    }
 }
