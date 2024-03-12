@@ -29,7 +29,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
 class EmployeeControllerTest {
     @InjectMocks
     private EmployeeController employeeController;
@@ -66,10 +65,8 @@ class EmployeeControllerTest {
     @Test
     void クリエイトリクエストを受けっとたとき名前及び年齢情報がnullだとバリデーションが実行される() throws Exception {
         EmployeeRequest request = new EmployeeRequest(null,null);
-        String requestJson = new ObjectMapper().writeValueAsString(request);
         MvcResult mvcResult = mockMvc.perform(post("/employees")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andReturn();
         String responseContent = mvcResult.getResponse().getContentAsString();
