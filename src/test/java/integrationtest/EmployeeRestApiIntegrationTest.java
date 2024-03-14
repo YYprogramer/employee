@@ -1,9 +1,12 @@
 package integrationtest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.spring.api.DBRider;
 import com.jayway.jsonpath.JsonPath;
 import com.yy5.employee.EmployeeApplication;
+import com.yy5.employee.controller.request.EmployeeRequest;
+import com.yy5.employee.mapper.EmployeeMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -13,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,5 +78,33 @@ public class EmployeeRestApiIntegrationTest {
         assertEquals("EmployeeNumber:" + employeeNumber + " is not found", JsonPath.read(response, "$.message"));
         assertEquals("/employees/" + employeeNumber , JsonPath.read(response, "$.path"));
         assertEquals("Not Found", JsonPath.read(response, "$.error"));
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void クリエイトリクエストを受け取ったとき社員情報を登録する() throws Exception {
+        EmployeeRequest request = new EmployeeRequest("iwatsuki",29);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        MvcResult postResult = (MvcResult) mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(requestBody))
+               .andExpect(MockMvcResultMatchers.status().isCreated())
+               .andReturn();
+
+        String locationHeader = postResult.getResponse().getHeader("Location");
+        String[] locationParts = locationHeader.split("/");
+        int id = Integer.parseInt(locationParts[locationParts.length - 1]);
+        MvcResult getResult = mockMvc.perform(MockMvcRequestBuilders.get("/employees/" + id))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String response = getResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        assertEquals(id, (Integer) JsonPath.read(response, "$.employeeNumber"));
+        assertEquals("iwatsuki", JsonPath.read(response, "$.name"));
+        assertEquals(29, (Integer) JsonPath.read(response, "$.age"));
     }
 }
