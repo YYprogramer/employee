@@ -42,4 +42,17 @@ public class EmployeeRestApiIntegrationTest {
                         """
                 , response, JSONCompareMode.STRICT);
     }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 存在する社員番号がリクエストされた時に該当の社員情報が取得できること() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/employees/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                         {"employeeNumber":1,"name":"スティーブ","age":21}
+                        """
+                , response, JSONCompareMode.STRICT);
+    }
 }
