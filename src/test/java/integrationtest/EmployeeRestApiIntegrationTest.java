@@ -2,8 +2,11 @@ package integrationtest;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.spring.api.DBRider;
+import com.jayway.jsonpath.JsonPath;
 import com.yy5.employee.EmployeeApplication;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = EmployeeApplication.class)
 @AutoConfigureMockMvc
@@ -54,5 +59,19 @@ public class EmployeeRestApiIntegrationTest {
                          {"employeeNumber":1,"name":"スティーブ","age":21}
                         """
                 , response, JSONCompareMode.STRICT);
+    }
+
+    @ParameterizedTest
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    @ValueSource(ints = {0,100})
+    void 存在しない社員番号がリクエストされた時に404をレスポンスすること(int employeeNumber) throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/employees/" + employeeNumber))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        assertEquals("EmployeeNumber:" + employeeNumber + " is not found", JsonPath.read(response, "$.message"));
+        assertEquals("/employees/" + employeeNumber , JsonPath.read(response, "$.path"));
+        assertEquals("Not Found", JsonPath.read(response, "$.error"));
     }
 }
