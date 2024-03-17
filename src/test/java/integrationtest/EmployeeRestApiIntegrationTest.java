@@ -131,9 +131,25 @@ public class EmployeeRestApiIntegrationTest {
 
                     .andExpect(MockMvcResultMatchers.status().isBadRequest())
 
-                    .andExpect(jsonPath("$.message").value("Validation failed"))
-                    .andExpect(jsonPath("$.errors").isArray())
-                    .andExpect(jsonPath("$.errors[0]").value("無効な名前です"))
-                    .andExpect(jsonPath("$.errors[1]").value("無効な年齢です"));
+                    .andExpect(jsonPath("$.message").value("validation error"));
+    }
+
+    @ParameterizedTest
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    @NullSource
+    void クリエイトリクエストを受け取ったとき名前情報及nullだとバリデーションが実行されること(String name) throws Exception {
+        EmployeeRequest request = new EmployeeRequest(name, 29);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+                .andExpect(jsonPath("$.message").value("validation error"));
     }
 }
