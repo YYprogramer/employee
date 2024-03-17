@@ -121,25 +121,6 @@ public class EmployeeRestApiIntegrationTest {
     @DataSet(value = "datasets/employees.yml")
     @Transactional
     @NullSource
-    void クリエイトリクエストを受け取ったとき名前情報及び年齢情報がnullだとバリデーションが実行されること(Integer age, String name) throws Exception {
-        EmployeeRequest request = new EmployeeRequest(name, age);
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            String requestBody = objectMapper.writeValueAsString(request);
-
-            mockMvc.perform(MockMvcRequestBuilders.post("/employees")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(requestBody))
-
-                    .andExpect(MockMvcResultMatchers.status().isBadRequest())
-
-                    .andExpect(jsonPath("$.message").value("validation error"));
-    }
-
-    @ParameterizedTest
-    @DataSet(value = "datasets/employees.yml")
-    @Transactional
-    @NullSource
     void クリエイトリクエストを受け取ったとき名前情報がnullだとバリデーションが実行されること(String name) throws Exception {
         EmployeeRequest request = new EmployeeRequest(name, 29);
 
