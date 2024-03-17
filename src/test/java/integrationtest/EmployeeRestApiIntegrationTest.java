@@ -7,8 +7,11 @@ import com.jayway.jsonpath.JsonPath;
 import com.yy5.employee.EmployeeApplication;
 import com.yy5.employee.controller.request.EmployeeRequest;
 import com.yy5.employee.mapper.EmployeeMapper;
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.Null;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -24,8 +27,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest(classes = EmployeeApplication.class)
 @AutoConfigureMockMvc
@@ -81,7 +87,7 @@ public class EmployeeRestApiIntegrationTest {
     }
 
     @Test
-    @DataSet(value = "datasets/employees.yml")
+    @DataSet(value = "datasets/employees.yml", cleanBefore = true, cleanAfter = true)
     @Transactional
     void クリエイトリクエストを受け取ったとき社員情報を登録する() throws Exception {
         EmployeeRequest request = new EmployeeRequest("iwatsuki",29);
@@ -106,5 +112,27 @@ public class EmployeeRestApiIntegrationTest {
         assertEquals(id, (Integer) JsonPath.read(response, "$.employeeNumber"));
         assertEquals("iwatsuki", JsonPath.read(response, "$.name"));
         assertEquals(29, (Integer) JsonPath.read(response, "$.age"));
+    }
+
+    @ParameterizedTest
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    @NullSource
+    void クリエイトリクエストを受け取ったとき名前情報及び年齢情報がnullだとバリデーションが実行されること(String name,Integer age) throws Exception {
+        EmployeeRequest request = new EmployeeRequest(name,age);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String requestBody = objectMapper.writeValueAsString(request);
+
+            mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(requestBody))
+
+                    .andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+                    .andExpect(jsonPath("$.message").value("Validation failed"))
+                    .andExpect(jsonPath("$.errors").isArray())
+                    .andExpect(jsonPath("$.errors[0]").value("無効な名前です"))
+                    .andExpect(jsonPath("$.errors[1]").value("無効な年齢です"));
     }
 }
