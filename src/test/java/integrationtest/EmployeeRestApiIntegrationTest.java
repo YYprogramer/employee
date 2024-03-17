@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Null;
 import org.apache.ibatis.annotations.Param;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -28,6 +29,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -138,8 +140,64 @@ public class EmployeeRestApiIntegrationTest {
     @DataSet(value = "datasets/employees.yml")
     @Transactional
     @NullSource
-    void クリエイトリクエストを受け取ったとき名前情報及nullだとバリデーションが実行されること(String name) throws Exception {
+    void クリエイトリクエストを受け取ったとき名前情報がnullだとバリデーションが実行されること(String name) throws Exception {
         EmployeeRequest request = new EmployeeRequest(name, 29);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+                .andExpect(jsonPath("$.message").value("validation error"));
+    }
+
+    @ParameterizedTest
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    @NullSource
+    void クリエイトリクエストを受け取ったとき年齢情報がnullだとバリデーションが実行されること(Integer age) throws Exception {
+        EmployeeRequest request = new EmployeeRequest("iwatsuki", age);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+                .andExpect(jsonPath("$.message").value("validation error"));
+    }
+    @ParameterizedTest
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    @EmptySource
+    void クリエイトリクエストを受け取ったとき名前情報が空文字だとバリデーションが実行されること(String name) throws Exception {
+        EmployeeRequest request = new EmployeeRequest(name, 29);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+                .andExpect(jsonPath("$.message").value("validation error"));
+    }
+
+    @ParameterizedTest
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    @EmptySource
+    void クリエイトリクエストを受け取ったとき年齢情報が空文字だとバリデーションが実行されること(Integer age) throws Exception {
+        EmployeeRequest request = new EmployeeRequest("iwatsuki", age);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(request);
