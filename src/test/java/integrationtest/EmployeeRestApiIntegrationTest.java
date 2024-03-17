@@ -9,6 +9,7 @@ import com.yy5.employee.controller.request.EmployeeRequest;
 import com.yy5.employee.mapper.EmployeeMapper;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Null;
+import org.apache.ibatis.annotations.Param;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
@@ -118,8 +119,8 @@ public class EmployeeRestApiIntegrationTest {
     @DataSet(value = "datasets/employees.yml")
     @Transactional
     @NullSource
-    void クリエイトリクエストを受け取ったとき名前情報及び年齢情報がnullだとバリデーションが実行されること(String name,Integer age) throws Exception {
-        EmployeeRequest request = new EmployeeRequest(name,age);
+    void クリエイトリクエストを受け取ったとき名前情報及び年齢情報がnullだとバリデーションが実行されること(Integer age, String name) throws Exception {
+        EmployeeRequest request = new EmployeeRequest(name, age);
 
             ObjectMapper objectMapper = new ObjectMapper();
             String requestBody = objectMapper.writeValueAsString(request);
