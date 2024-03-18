@@ -6,21 +6,20 @@ import com.github.database.rider.spring.api.DBRider;
 import com.jayway.jsonpath.JsonPath;
 import com.yy5.employee.EmployeeApplication;
 import com.yy5.employee.controller.request.EmployeeRequest;
-import com.yy5.employee.mapper.EmployeeMapper;
-import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.Null;
-import org.apache.ibatis.annotations.Param;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -29,11 +28,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest(classes = EmployeeApplication.class)
@@ -154,6 +150,7 @@ public class EmployeeRestApiIntegrationTest {
 
                 .andExpect(jsonPath("$.message").value("validation error"));
     }
+
     @ParameterizedTest
     @DataSet(value = "datasets/employees.yml")
     @Transactional
