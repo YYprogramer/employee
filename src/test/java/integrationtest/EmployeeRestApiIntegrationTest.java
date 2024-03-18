@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.validation.Validator;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,6 +41,9 @@ public class EmployeeRestApiIntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    Validator validator;
 
     @Test
     @DataSet(value = "datasets/employees.yml")
@@ -139,8 +143,10 @@ public class EmployeeRestApiIntegrationTest {
     void クリエイトリクエストを受け取ったとき年齢情報がnullだとバリデーションが実行されること(Integer age) throws Exception {
         EmployeeRequest request = new EmployeeRequest("iwatsuki", age);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(request);
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = mapper.writeValueAsString(request);
+
+//        Validator.validate(request); // バリデーション実行
 
         mockMvc.perform(MockMvcRequestBuilders.post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
