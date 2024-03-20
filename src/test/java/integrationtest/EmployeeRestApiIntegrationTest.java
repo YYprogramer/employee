@@ -217,6 +217,61 @@ public class EmployeeRestApiIntegrationTest {
     }
 
     @Test
+    @DataSet(value = "datasets/employees.yml", cleanBefore = true, cleanAfter = true)
+    @Transactional
+    void クリエイトリクエストを受け取ったとき年齢情報が18歳だと登録すること() throws Exception {
+        EmployeeRequest request = new EmployeeRequest("正常テスト",18);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        MvcResult postResult = (MvcResult) mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
+
+        String locationHeader = postResult.getResponse().getHeader("Location");
+        String[] locationParts = locationHeader.split("/");
+        int id = Integer.parseInt(locationParts[locationParts.length - 1]);
+        MvcResult getResult = mockMvc.perform(MockMvcRequestBuilders.get("/employees/" + id))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String response = getResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        assertEquals(id, (Integer) JsonPath.read(response, "$.employeeNumber"));
+        assertEquals("正常テスト", JsonPath.read(response, "$.name"));
+        assertEquals(18, (Integer) JsonPath.read(response, "$.age"));
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml", cleanBefore = true, cleanAfter = true)
+    @Transactional
+    void クリエイトリクエストを受け取ったとき年齢情報が65歳だと登録すること() throws Exception {
+        EmployeeRequest request = new EmployeeRequest("正常テスト",65);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        MvcResult postResult = (MvcResult) mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
+
+        String locationHeader = postResult.getResponse().getHeader("Location");
+        String[] locationParts = locationHeader.split("/");
+        int id = Integer.parseInt(locationParts[locationParts.length - 1]);
+        MvcResult getResult = mockMvc.perform(MockMvcRequestBuilders.get("/employees/" + id))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String response = getResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        assertEquals(id, (Integer) JsonPath.read(response, "$.employeeNumber"));
+        assertEquals("正常テスト", JsonPath.read(response, "$.name"));
+        assertEquals(65, (Integer) JsonPath.read(response, "$.age"));
+    }
+    @Test
     @DataSet(value = "datasets/employees.yml")
     @Transactional
     void クリエイトリクエストを受け取ったとき年齢が66歳だとバリデーションが実行されること() throws Exception {
