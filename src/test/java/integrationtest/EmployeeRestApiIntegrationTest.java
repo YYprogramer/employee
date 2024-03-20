@@ -38,9 +38,6 @@ public class EmployeeRestApiIntegrationTest {
     @Autowired
     MockMvc mockMvc;
 
-//    @Autowired
-//    Validator validator;
-
     @Test
     @DataSet(value = "datasets/employees.yml")
     @Transactional
