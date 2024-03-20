@@ -195,4 +195,44 @@ public class EmployeeRestApiIntegrationTest {
                 .andExpect(jsonPath("$.errors[0].field").value("age"))
                 .andExpect(jsonPath("$.errors[0].message").value("無効な年齢です"));
     }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void クリエイトリクエストを受け取ったとき年齢が17歳だとバリデーションが実行されること() throws Exception {
+        EmployeeRequest request = new EmployeeRequest("テスト", 17);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+                .andExpect(jsonPath("$.message").value("validation error"))
+                .andExpect(jsonPath("$.errors[0].field").value("age"))
+                .andExpect(jsonPath("$.errors[0].message").value("無効な年齢です"));
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void クリエイトリクエストを受け取ったとき年齢が66歳だとバリデーションが実行されること() throws Exception {
+        EmployeeRequest request = new EmployeeRequest("テスト", 66);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(request);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+
+                .andExpect(jsonPath("$.message").value("validation error"))
+                .andExpect(jsonPath("$.errors[0].field").value("age"))
+                .andExpect(jsonPath("$.errors[0].message").value("無効な年齢です"));
+    }
 }
