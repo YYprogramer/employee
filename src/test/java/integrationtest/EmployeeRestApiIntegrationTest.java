@@ -134,7 +134,9 @@ public class EmployeeRestApiIntegrationTest {
 
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
 
-                .andExpect(jsonPath("$.message").value("validation error"));
+                .andExpect(jsonPath("$.message").value("validation error"))
+                .andExpect(jsonPath("$.errors[0].field").value("name"))
+                .andExpect(jsonPath("$.errors[0].message").value("無効な名前です"));
     }
 
     @Test
@@ -150,7 +152,9 @@ public class EmployeeRestApiIntegrationTest {
 
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
 
-                .andExpect(jsonPath("$.message").value("validation error"));
+                .andExpect(jsonPath("$.message").value("validation error"))
+                .andExpect(jsonPath("$.errors[0].field").value("age"))
+                .andExpect(jsonPath("$.errors[0].message").value("無効な年齢です"));
     }
 
     @ParameterizedTest
@@ -169,7 +173,9 @@ public class EmployeeRestApiIntegrationTest {
 
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
 
-                .andExpect(jsonPath("$.message").value("validation error"));
+                .andExpect(jsonPath("$.message").value("validation error"))
+                .andExpect(jsonPath("$.errors[0].field").value("name"))
+                .andExpect(jsonPath("$.errors[0].message").value("無効な名前です"));
     }
 
     @Test
@@ -185,6 +191,8 @@ public class EmployeeRestApiIntegrationTest {
 
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
 
-                .andExpect(jsonPath("$.message").value("validation error"));
+                .andExpect(jsonPath("$.message").value("validation error"))
+                .andExpect(jsonPath("$.errors[0].field").value("age"))
+                .andExpect(jsonPath("$.errors[0].message").value("無効な年齢です"));
     }
 }
