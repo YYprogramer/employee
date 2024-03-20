@@ -56,5 +56,10 @@ class EmployeeMapperTest {
     public void クリエイトリクエストを受け取ったとき新しい社員が登録できること() {
         Employee employee = new Employee("iwatsuki",29);
         employeeMapper.insert(employee);
+        Optional<Employee> actualEmployee = employeeMapper.findById(employee.getEmployeeNumber());
+        assertThat(actualEmployee).isPresent();
+        assertThat(actualEmployee.get().getEmployeeNumber()).isEqualTo(employee.getEmployeeNumber());
+        assertThat(actualEmployee.get().getName()).isEqualTo(employee.getName());
+        assertThat(actualEmployee.get().getAge()).isEqualTo(employee.getAge());
     }
 }
