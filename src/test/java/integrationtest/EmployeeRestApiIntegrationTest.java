@@ -137,11 +137,10 @@ public class EmployeeRestApiIntegrationTest {
                 .andExpect(jsonPath("$.message").value("validation error"));
     }
 
-    @ParameterizedTest
+    @Test
     @DataSet(value = "datasets/employees.yml")
     @Transactional
-    @NullSource
-    void クリエイトリクエストを受け取ったとき年齢情報がnullだとバリデーションが実行されること(Integer age) throws Exception {
+    void クリエイトリクエストを受け取ったとき年齢情報がnullだとバリデーションが実行されること() throws Exception {
 
         String requestBody = "{\"name\": \"iwatsuki\", \"age\": null}";
 
