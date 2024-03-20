@@ -47,9 +47,9 @@ public class EmployeeRestApiIntegrationTest {
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         JSONAssert.assertEquals("""
                          [
-                         {"employeeNumber":1,"name":"スティーブ","age":21},
-                         {"employeeNumber":2,"name":"マーク","age":20},
-                         {"employeeNumber":3,"name":"ジェフ","age":30}
+                             {"employeeNumber":1,"name":"スティーブ","age":21},
+                             {"employeeNumber":2,"name":"マーク","age":20},
+                             {"employeeNumber":3,"name":"ジェフ","age":30}
                          ]
                         """
                 , response, JSONCompareMode.STRICT);
