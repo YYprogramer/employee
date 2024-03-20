@@ -172,15 +172,12 @@ public class EmployeeRestApiIntegrationTest {
                 .andExpect(jsonPath("$.message").value("validation error"));
     }
 
-    @ParameterizedTest
+    @Test
     @DataSet(value = "datasets/employees.yml")
     @Transactional
-    @EmptySource
-    void クリエイトリクエストを受け取ったとき年齢情報が空文字だとバリデーションが実行されること(Integer age) throws Exception {
-        EmployeeRequest request = new EmployeeRequest("iwatsuki", age);
+    void クリエイトリクエストを受け取ったとき年齢情報が空文字だとバリデーションが実行されること() throws Exception {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(request);
+        String requestBody = "{\"name\": \"iwatsuki\", \"age\": \" \"}";
 
         mockMvc.perform(MockMvcRequestBuilders.post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
