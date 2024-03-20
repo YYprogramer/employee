@@ -1,5 +1,6 @@
 package integrationtest;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.spring.api.DBRider;
@@ -141,12 +142,8 @@ public class EmployeeRestApiIntegrationTest {
     @Transactional
     @NullSource
     void クリエイトリクエストを受け取ったとき年齢情報がnullだとバリデーションが実行されること(Integer age) throws Exception {
-        EmployeeRequest request = new EmployeeRequest("iwatsuki", age);
 
-        ObjectMapper mapper = new ObjectMapper();
-        String requestBody = mapper.writeValueAsString(request);
-
-//        Validator.validate(request); // バリデーション実行
+        String requestBody = "{\"name\": \"iwatsuki\", \"age\": null}";
 
         mockMvc.perform(MockMvcRequestBuilders.post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
