@@ -62,4 +62,14 @@ class EmployeeMapperTest {
         assertThat(actualEmployee.get().getName()).isEqualTo(employee.getName());
         assertThat(actualEmployee.get().getAge()).isEqualTo(employee.getAge());
     }
+
+    @Test
+    @Transactional
+    public void 存在する社員情報を更新するリクエストを受け取ったとき社員情報を更新する() {
+        Optional<Employee> updateEmployee = employeeMapper.findById(1);
+        assertThat(updateEmployee).isEqualTo(Optional.of(new Employee(1,"スティーブ",21)));
+        employeeMapper.update(1,"ジョブズ",22);
+        Optional<Employee> updatedEmployee = employeeMapper.findById(1);
+        assertThat(updatedEmployee).isEqualTo(Optional.of(new Employee(1,"ジョブズ",22)));
+    }
 }
