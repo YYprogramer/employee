@@ -41,7 +41,7 @@ public class EmployeeRestApiIntegrationTest {
     @Test
     @DataSet(value = "datasets/employees.yml")
     @Transactional
-    void getallがリクエストされた時社員情報が全件取得できること() throws Exception {
+    void 全社員情報を取得するリクエストを受け取った時社員情報が全件取得できること() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
