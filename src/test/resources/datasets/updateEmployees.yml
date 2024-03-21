@@ -1,0 +1,10 @@
+employees:
+  - employeeNumber: 1
+    name: "更新後社員"
+    age: 30
+  - employeeNumber: 2
+    name: "マーク"
+    age: 20
+  - employeeNumber: 3
+    name: "ジェフ"
+    age: 30
