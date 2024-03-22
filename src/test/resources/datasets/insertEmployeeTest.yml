@@ -8,6 +8,6 @@ employees:
   - employeeNumber: 3
     name: "ジェフ"
     age: 30
-  - employeeNumber: 3
+  - employeeNumber: 4
     name: "iwatsuki"
     age: 29
