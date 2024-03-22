@@ -2,6 +2,7 @@ package integrationtest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.spring.api.DBRider;
 import com.jayway.jsonpath.JsonPath;
 import com.yy5.employee.EmployeeApplication;
@@ -28,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = EmployeeApplication.class)
 @AutoConfigureMockMvc
@@ -281,5 +283,30 @@ public class EmployeeRestApiIntegrationTest {
                 .andExpect(jsonPath("$.message").value("validation error"))
                 .andExpect(jsonPath("$.errors[0].field").value("age"))
                 .andExpect(jsonPath("$.errors[0].message").value("無効な年齢です"));
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @ExpectedDataSet(value = "datasets/updateEmployees.yml")
+    @Transactional
+    void 存在する社員情報を更新するリクエストを受け取ったとき社員情報を更新する() throws Exception {
+        String response =
+                mockMvc.perform(MockMvcRequestBuilders.patch("/employees/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                    {
+                                    "employeeNumber": 1,
+                                    "name": "更新後社員",
+                                    "age": 30
+                                    }
+                                """))
+                        .andExpect(status().isOk())
+                        .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        JSONAssert.assertEquals("""
+                {
+                    "message":"社員情報を更新しました"
+                }
+                """, response, JSONCompareMode.STRICT);
     }
 }
