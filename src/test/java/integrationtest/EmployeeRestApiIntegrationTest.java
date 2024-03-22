@@ -12,13 +12,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -308,5 +311,141 @@ public class EmployeeRestApiIntegrationTest {
                     "message":"社員情報を更新しました"
                 }
                 """, response, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 存在しない社員情報を更新するリクエストを受け取ったとき404エラーをレスポンスする() throws Exception {
+        String response =
+                mockMvc.perform(MockMvcRequestBuilders.patch("/employees/100")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                    {
+                                    "employeeNumber": 100,
+                                    "name": "更新後社員",
+                                    "age": 30
+                                    }
+                                """))
+                        .andExpect(status().isNotFound())
+                        .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        JSONAssert.assertEquals("""
+                {
+                     "message": "EmployeeNumber 100 is not found",
+                     "timestamp": "2024-03-22T19:00:01.451993+09:00[Asia/Tokyo]",
+                     "error": "Not Found",
+                     "path": "/employees/100",
+                     "status": "404"
+                }
+                """, response, new CustomComparator(JSONCompareMode.STRICT,
+                new Customization("timestamp",(((o1, o2) -> true)))));
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 存在する社員情報の名前だけ更新するリクエストを受け取ったとき400エラーをレスポンスする() throws Exception {
+        String response =
+                mockMvc.perform(MockMvcRequestBuilders.patch("/employees/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                    {
+                                    "employeeNumber": 1,
+                                    "name": "更新後社員",
+                                    "age": null
+                                    }
+                                """))
+                        .andExpect(status().isBadRequest())
+                        .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 存在する社員情報の年齢だけ更新するリクエストを受け取ったとき400エラーをレスポンスする() throws Exception {
+        String response =
+                mockMvc.perform(MockMvcRequestBuilders.patch("/employees/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                    {
+                                    "employeeNumber": 1,
+                                    "name": null,
+                                    "age": 30
+                                    }
+                                """))
+                        .andExpect(status().isBadRequest())
+                        .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 存在する社員情報の年齢を17歳にしてリクエストを受け取ったとき400エラーをレスポンスする() throws Exception {
+        String response =
+                mockMvc.perform(MockMvcRequestBuilders.patch("/employees/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                    {
+                                    "employeeNumber": 1,
+                                    "name": "更新後社員",
+                                    "age": 17
+                                    }
+                                """))
+                        .andExpect(status().isBadRequest())
+                        .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 存在する社員情報の年齢を66歳にしてリクエストを受け取ったとき400エラーをレスポンスする() throws Exception {
+        String response =
+                mockMvc.perform(MockMvcRequestBuilders.patch("/employees/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                            {
+                                            "employeeNumber": 1,
+                                            "name": "更新後社員",
+                                            "age": 66
+                                            }
+                                        """))
+                        .andExpect(status().isBadRequest())
+                        .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+    }
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 存在する社員情報の年齢を18歳にしてリクエストを受け取ったとき400エラーをレスポンスする() throws Exception {
+        String response =
+                mockMvc.perform(MockMvcRequestBuilders.patch("/employees/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                    {
+                                    "employeeNumber": 1,
+                                    "name": "更新後社員",
+                                    "age": 18
+                                    }
+                                """))
+                        .andExpect(status().isOk())
+                        .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 存在する社員情報の年齢を65歳にしてリクエストを受け取ったとき400エラーをレスポンスする() throws Exception {
+        String response =
+                mockMvc.perform(MockMvcRequestBuilders.patch("/employees/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                            {
+                                            "employeeNumber": 1,
+                                            "name": "更新後社員",
+                                            "age": 65
+                                            }
+                                        """))
+                        .andExpect(status().isOk())
+                        .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
     }
 }
