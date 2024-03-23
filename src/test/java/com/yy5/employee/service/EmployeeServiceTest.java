@@ -61,4 +61,29 @@ class EmployeeServiceTest {
         assertThat(employeeService.insert("iwatsuki",29)).isEqualTo(employee);
         verify(employeeMapper).insert(employee);
     }
+
+    @Test
+    void  存在する社員情報を更新するリクエストを受け取ったとき社員情報を更新する() {
+        Employee updateEmployee = new Employee(1,"更新前社員",20);
+
+        doReturn(Optional.of(updateEmployee)).when(employeeMapper).findById(1);
+
+        employeeService.update(1,"更新後社員",30);
+
+        verify(employeeMapper).update(1,"更新後社員",30);
+    }
+
+    @Test
+    void  存在しない社員情報を更新するリクエストを受け取ったとき404エラーをレスポンスする() {
+        int notFoundEmployeeNumber = 100;
+        String errorMessage = "EmployeeNumber " + notFoundEmployeeNumber + " is not found";
+
+        doReturn(Optional.empty()).when(employeeMapper).findById(notFoundEmployeeNumber);
+
+        EmployeeNotFoundException exception = assertThrows(EmployeeNotFoundException.class, () -> {
+            employeeService.update(notFoundEmployeeNumber, "新しい名前", 25);
+        },"404 NOT_FOUND");
+        assertThat(exception.getMessage()).isEqualTo(errorMessage);
+        verify(employeeMapper).findById(notFoundEmployeeNumber);
+    }
 }
