@@ -100,7 +100,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void 存在しない社員情報を削除するリクエストを受け取ったとき404エラーをレスポンスする() {
+    void 存在しない社員情報を削除するリクエストを受け取ったとき例外処理のエラーメッセージをレスポンスする() {
         doReturn(Optional.empty()).when(employeeMapper).findById(100);
         EmployeeNotFoundException exception = assertThrows(EmployeeNotFoundException.class, () -> employeeService.delete(100));
         assertEquals("EmployeeNumber 100 is not found", exception.getMessage());
