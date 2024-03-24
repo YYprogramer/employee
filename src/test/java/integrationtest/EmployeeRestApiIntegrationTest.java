@@ -526,7 +526,7 @@ public class EmployeeRestApiIntegrationTest {
     @Test
     @DataSet(value = "datasets/employees.yml")
     @Transactional
-    void 漢数字で社員情報を削除するリクエストを受け取ったとき400エラーをレスポンスする() throws Exception{
+    void 半角数字以外の文字列で社員情報を削除するリクエストを受け取ったとき400エラーをレスポンスする() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.delete("/employees/一"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andReturn();
