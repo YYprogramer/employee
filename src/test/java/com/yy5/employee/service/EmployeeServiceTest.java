@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -85,5 +86,24 @@ class EmployeeServiceTest {
         },"404 NOT_FOUND");
         assertThat(exception.getMessage()).isEqualTo(errorMessage);
         verify(employeeMapper).findById(notFoundEmployeeNumber);
+    }
+
+    @Test
+    void 存在する社員情報を削除するリクエストを受け取ったとき社員情報を削除する() {
+        Employee deleteEmployee = new Employee(1,"削除社員情報",20);
+        doReturn(Optional.of(deleteEmployee))
+                .when(employeeMapper).findById(1);
+        employeeService.delete(1);
+        verify(employeeMapper).delete(1);
+    }
+
+    @Test
+    void 存在しない社員情報を削除するリクエストを受け取ったとき404エラーをレスポンスする() {
+        doReturn(Optional.empty()).when(employeeMapper).findById(100);
+        EmployeeNotFoundException exception = assertThrows(EmployeeNotFoundException.class, () -> employeeService.delete(100));
+        assertEquals("EmployeeNumber 100 is not found", exception.getMessage());
+
+        verify(employeeMapper, times(1)).findById(100);
+        verify(employeeMapper, times(0)).delete(100);
     }
 }
