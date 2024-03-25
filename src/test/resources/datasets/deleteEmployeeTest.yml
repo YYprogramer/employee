@@ -1,7 +1,4 @@
 employees:
-  - employeeNumber: 1
-    name: "スティーブ"
-    age: 21
   - employeeNumber: 2
     name: "マーク"
     age: 20

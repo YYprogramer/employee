@@ -21,7 +21,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -31,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -447,5 +447,88 @@ public class EmployeeRestApiIntegrationTest {
                                         """))
                         .andExpect(status().isOk())
                         .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @ExpectedDataSet(value = "datasets/deleteEmployeeTest.yml")
+    @Transactional
+    void 存在する社員情報を削除するリクエストを受け取ったとき社員情報を削除する() throws Exception{
+        assertTrue(mockMvc.perform(MockMvcRequestBuilders.delete("/employees/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString().contains("Employee  deleted"));
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                [
+                    {
+                        "employeeNumber": 2,
+                        "name": "マーク",
+                        "age": 20
+                    },
+                    {
+                        "employeeNumber": 3,
+                        "name": "ジェフ",
+                        "age": 30
+                    }
+                ]
+                """, response, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 存在しない社員情報を削除するリクエストを受け取ったとき404エラーをレスポンスする() throws Exception{
+        assertTrue(mockMvc.perform(MockMvcRequestBuilders.delete("/employees/100"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn().getResponse().getContentAsString().contains("EmployeeNumber 100 is not found"));
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        JSONAssert.assertEquals("""
+                [
+                    {
+                        "employeeNumber": 1,
+                        "name": "スティーブ",
+                        "age": 21
+                    },
+                    {
+                        "employeeNumber": 2,
+                        "name": "マーク",
+                        "age": 20
+                    },
+                    {
+                        "employeeNumber": 3,
+                        "name": "ジェフ",
+                        "age": 30
+                    }
+                ]
+                """, response, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void nullで社員情報を削除するリクエストを受け取ったとき400エラーをレスポンスする() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.delete("/employees/null"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 空文字で社員情報を削除するリクエストを受け取ったとき400エラーをレスポンスする() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.delete("/employees/ "))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test
+    @DataSet(value = "datasets/employees.yml")
+    @Transactional
+    void 半角数字以外の文字列で社員情報を削除するリクエストを受け取ったとき400エラーをレスポンスする() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.delete("/employees/一"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
     }
 }
