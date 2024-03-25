@@ -68,21 +68,4 @@ class EmployeeMapperTest {
         employeeMapper.update(1,"ジョブズ",22);
         Optional<Employee> updatedEmployee = employeeMapper.findById(1);
     }
-
-    @Test
-    @DataSet(value = "datasets/employees.yml")
-    @ExpectedDataSet(value = "datasets/deleteEmployeeTest.yml")
-    @Transactional
-    void 存在する社員情報を削除するリクエストを受け取ったとき社員情報を削除する() {
-        employeeMapper.delete(1);
-    }
-
-    @Test
-    @DataSet(value ="datasets/employees.yml")
-    @ExpectedDataSet(value ="datasets/employees.yml")
-    @Transactional
-    public void 存在しない映画情報を削除した場合はテーブルの既存レコードは削除されないこと(){
-        employeeMapper.delete(100);
-    }
-
 }

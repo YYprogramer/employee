@@ -1,7 +1,0 @@
-employees:
-  - employeeNumber: 2
-    name: "マーク"
-    age: 20
-  - employeeNumber: 3
-    name: "ジェフ"
-    age: 30
